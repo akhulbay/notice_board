@@ -1,7 +1,7 @@
 package kz.shyngys.notice_board.service;
 
-import kz.shyngys.notice_board.dto.UserToCreateUpdateDto;
-import kz.shyngys.notice_board.dto.UserToReadDto;
+import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
+import kz.shyngys.notice_board.dto.read.UserToReadDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

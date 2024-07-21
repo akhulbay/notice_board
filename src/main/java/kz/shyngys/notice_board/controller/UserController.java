@@ -1,7 +1,7 @@
 package kz.shyngys.notice_board.controller;
 
-import kz.shyngys.notice_board.dto.UserToCreateUpdateDto;
-import kz.shyngys.notice_board.dto.UserToReadDto;
+import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
+import kz.shyngys.notice_board.dto.read.UserToReadDto;
 import kz.shyngys.notice_board.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;

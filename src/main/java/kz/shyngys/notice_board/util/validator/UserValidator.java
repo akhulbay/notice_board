@@ -1,6 +1,6 @@
 package kz.shyngys.notice_board.util.validator;
 
-import kz.shyngys.notice_board.dto.UserToCreateUpdateDto;
+import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import lombok.experimental.UtilityClass;
 
 import static kz.shyngys.notice_board.util.StrUtil.isNullOrEmpty;

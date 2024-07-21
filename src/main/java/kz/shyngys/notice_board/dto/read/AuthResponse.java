@@ -1,4 +1,4 @@
-package kz.shyngys.notice_board.dto;
+package kz.shyngys.notice_board.dto.read;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
