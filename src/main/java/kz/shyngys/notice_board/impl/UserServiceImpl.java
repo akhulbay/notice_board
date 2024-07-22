@@ -1,8 +1,8 @@
 package kz.shyngys.notice_board.impl;
 
 
-import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import kz.shyngys.notice_board.dto.read.UserToReadDto;
+import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoUserWithId;
 import kz.shyngys.notice_board.mapper.UserCreateUpdateMapper;
 import kz.shyngys.notice_board.mapper.UserReadMapper;

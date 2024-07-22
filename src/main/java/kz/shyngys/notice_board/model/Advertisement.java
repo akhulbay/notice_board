@@ -23,6 +23,7 @@ public class Advertisement {
 
     private String description;
 
+    @Column(name = "min_price")
     private Long minPrice;
 
     @Column(name = "created_at")
@@ -30,6 +31,9 @@ public class Advertisement {
 
     @Enumerated(EnumType.STRING)
     private AdStatus status;
+
+    @ManyToOne
+    private User user;
 
     @OneToMany
     private List<Image> images;

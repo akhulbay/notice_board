@@ -40,16 +40,27 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-    // endregion jwt
+    // endregion
 
     // region mapstruct
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    // endregion mapstruct
+    // endregion
 
+    // region postgres
+    implementation 'org.postgresql:postgresql:42.6.0'
+    // endregion
+
+    // region liquibase
+    implementation 'org.liquibase:liquibase-core:4.22.0'
+    // endregion liquibase
+
+    // region test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    //endregion
+
 }
 
 tasks.named('test') {
