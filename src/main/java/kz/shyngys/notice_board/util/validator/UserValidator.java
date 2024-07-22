@@ -1,14 +1,15 @@
 package kz.shyngys.notice_board.util.validator;
 
 import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
-import lombok.experimental.UtilityClass;
 
 import static kz.shyngys.notice_board.util.StrUtil.isNullOrEmpty;
 
-@UtilityClass
-public class UserValidator {
+public final class UserValidator {
 
-    public void validate(UserToCreateUpdateDto user) {
+    private UserValidator() {
+    }
+
+    public static void validate(UserToCreateUpdateDto user) {
         if (isNullOrEmpty(user.email())) {
             throw new IllegalArgumentException("Email is required");
         }

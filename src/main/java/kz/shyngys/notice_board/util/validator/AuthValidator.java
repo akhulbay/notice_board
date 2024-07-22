@@ -1,12 +1,13 @@
 package kz.shyngys.notice_board.util.validator;
 
 import kz.shyngys.notice_board.dto.LoginRequest;
-import lombok.experimental.UtilityClass;
 
 import static kz.shyngys.notice_board.util.StrUtil.isNullOrEmpty;
 
-@UtilityClass
-public class AuthValidator {
+public final class AuthValidator {
+
+    private AuthValidator() {
+    }
 
     public static void validate(LoginRequest request) {
         if (isNullOrEmpty(request.password)) {

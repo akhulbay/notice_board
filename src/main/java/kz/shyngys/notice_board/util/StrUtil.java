@@ -1,15 +1,15 @@
 package kz.shyngys.notice_board.util;
 
-import lombok.experimental.UtilityClass;
+public final class StrUtil {
 
-@UtilityClass
-public class StrUtil {
+    private StrUtil() {
+    }
 
-    public boolean isNullOrEmpty(String str) {
+    public static boolean isNullOrEmpty(String str) {
         return str == null || str.isEmpty();
     }
 
-    public boolean isNotNullAndEmpty(String str) {
+    public static boolean isNotNullAndEmpty(String str) {
         return str != null && !str.isEmpty();
     }
 
