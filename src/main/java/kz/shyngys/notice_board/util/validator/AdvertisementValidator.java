@@ -1,14 +1,15 @@
 package kz.shyngys.notice_board.util.validator;
 
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
-import lombok.experimental.UtilityClass;
 
 import static kz.shyngys.notice_board.util.StrUtil.isNullOrEmpty;
 
-@UtilityClass
-public class AdvertisementValidator {
+public final class AdvertisementValidator {
 
-    public void validate(AdvertisementToCreateUpdateDto dto) {
+    private AdvertisementValidator() {
+    }
+
+    public static void validate(AdvertisementToCreateUpdateDto dto) {
         if (isNullOrEmpty(dto.title())) {
             throw new IllegalArgumentException("Title cannot be null or empty");
         }
