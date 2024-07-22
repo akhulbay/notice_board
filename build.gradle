@@ -59,10 +59,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    testImplementation 'org.testng:testng:7.10.2'
     //endregion
 
 }
 
-tasks.named('test') {
-    useJUnitPlatform()
+test {
+    useTestNG()
 }
