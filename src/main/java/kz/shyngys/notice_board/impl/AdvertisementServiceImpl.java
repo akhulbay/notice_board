@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -50,7 +52,30 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Transactional
     @Override
     public AdvertisementToReadDto update(@NonNull Long id, @NonNull AdvertisementToCreateUpdateDto dto) {
-        return null;
+        return advertisementRepository.findById(id).stream()
+                .peek(advertisement -> setUpdates(advertisement, dto))
+                .map(advertisementRepository::saveAndFlush)
+                .map(AdvertisementReadMapper.INSTANCE::toRead)
+                .findFirst()
+                .orElseThrow(() -> new NoAdvertisementWithId(id));
+    }
+
+    private void setUpdates(Advertisement advertisement, AdvertisementToCreateUpdateDto dto) {
+        if (isNotNullAndEmpty(dto.title())) {
+            advertisement.setTitle(dto.title());
+        }
+
+        if (isNotNullAndEmpty(dto.description())) {
+            advertisement.setDescription(dto.description());
+        }
+
+        if (dto.createdAt() != null) {
+            advertisement.setCreatedAt(dto.createdAt());
+        }
+
+        if (dto.minPrice() != null) {
+            advertisement.setMinPrice(dto.minPrice());
+        }
     }
 
 }
