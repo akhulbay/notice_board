@@ -17,4 +17,6 @@ public interface AdvertisementService {
 
     AdvertisementToReadDto update(Long id, AdvertisementToCreateUpdateDto dto);
 
+    void delete(Long id);
+
 }

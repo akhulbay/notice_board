@@ -78,4 +78,10 @@ public class AdvertisementServiceImpl implements AdvertisementService {
         }
     }
 
+    @Transactional
+    @Override
+    public void delete(Long id) {
+        advertisementRepository.deleteById(id);
+    }
+
 }
