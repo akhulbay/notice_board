@@ -2,6 +2,7 @@ package kz.shyngys.notice_board.service;
 
 import kz.shyngys.notice_board.dto.filter.AdFilter;
 import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
+import kz.shyngys.notice_board.dto.read.PageResponse;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import org.springframework.data.domain.Pageable;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 public interface AdvertisementService {
 
-    List<AdvertisementToReadDto> load(Pageable pageable, AdFilter filter);
+    PageResponse<AdvertisementToReadDto> load(Pageable pageable, AdFilter filter);
 
     AdvertisementToReadDto loadById(Long id);
 

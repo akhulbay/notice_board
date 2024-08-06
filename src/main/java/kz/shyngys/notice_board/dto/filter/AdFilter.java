@@ -8,7 +8,6 @@ public record AdFilter(
         Long priceFrom,
         Long priceTo,
         LocalDateTime createdAtFrom,
-        LocalDateTime createdAtTo,
-        Boolean hasAnyImage) {
+        LocalDateTime createdAtTo) {
 
 }

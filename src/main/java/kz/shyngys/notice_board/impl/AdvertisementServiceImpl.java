@@ -2,6 +2,7 @@ package kz.shyngys.notice_board.impl;
 
 import kz.shyngys.notice_board.dto.filter.AdFilter;
 import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
+import kz.shyngys.notice_board.dto.read.PageResponse;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
 import kz.shyngys.notice_board.mapper.AdvertisementCreateUpdateMapper;
@@ -9,14 +10,14 @@ import kz.shyngys.notice_board.mapper.AdvertisementReadMapper;
 import kz.shyngys.notice_board.model.Advertisement;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.service.AdvertisementService;
+import kz.shyngys.notice_board.specification.AdSpecification;
 import kz.shyngys.notice_board.util.validator.AdvertisementValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
 
@@ -28,8 +29,12 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final AdvertisementRepository advertisementRepository;
 
     @Override
-    public List<AdvertisementToReadDto> load(@NonNull Pageable pageable, AdFilter filter) {
-        return List.of();
+    public PageResponse<AdvertisementToReadDto> load(@NonNull Pageable pageable, AdFilter filter) {
+        Page<Advertisement> page = filter == null
+                ? advertisementRepository.findAll(pageable)
+                : advertisementRepository.findAll(AdSpecification.withFilter(filter), pageable);
+
+        return PageResponse.of(page, AdvertisementReadMapper.INSTANCE::toRead);
     }
 
     @Override

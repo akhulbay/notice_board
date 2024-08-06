@@ -2,6 +2,7 @@ package kz.shyngys.notice_board.controller;
 
 import kz.shyngys.notice_board.dto.filter.AdFilter;
 import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
+import kz.shyngys.notice_board.dto.read.PageResponse;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.service.AdvertisementService;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,9 @@ public class AdvertisementController {
     private final AdvertisementService advertisementService;
 
     @GetMapping
-    public List<AdvertisementToReadDto> findAll(@RequestParam("size") int size,
-                                                @RequestParam("page") int page,
-                                                @RequestParam(value = "filer", required = false) AdFilter filter) {
+    public PageResponse<AdvertisementToReadDto> findAll(@RequestParam("size") int size,
+                                                        @RequestParam("page") int page,
+                                                        @RequestParam(value = "filer", required = false) AdFilter filter) {
 
         return advertisementService.load(PageRequest.of(page, size), filter);
     }
