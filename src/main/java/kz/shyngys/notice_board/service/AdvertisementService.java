@@ -6,8 +6,6 @@ import kz.shyngys.notice_board.dto.read.PageResponse;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
-
 public interface AdvertisementService {
 
     PageResponse<AdvertisementToReadDto> load(Pageable pageable, AdFilter filter);

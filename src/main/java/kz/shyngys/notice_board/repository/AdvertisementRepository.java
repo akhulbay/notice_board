@@ -1,6 +1,9 @@
 package kz.shyngys.notice_board.repository;
 
+import kz.shyngys.notice_board.model.AdStatus;
 import kz.shyngys.notice_board.model.Advertisement;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -8,5 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>,
         JpaSpecificationExecutor<Advertisement> {
+
+    Page<Advertisement> findAllByStatusEquals(AdStatus status, Pageable pageable);
 
 }

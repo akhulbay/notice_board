@@ -7,6 +7,7 @@ import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
 import kz.shyngys.notice_board.mapper.AdvertisementCreateUpdateMapper;
 import kz.shyngys.notice_board.mapper.AdvertisementReadMapper;
+import kz.shyngys.notice_board.model.AdStatus;
 import kz.shyngys.notice_board.model.Advertisement;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.service.AdvertisementService;
@@ -31,7 +32,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     @Override
     public PageResponse<AdvertisementToReadDto> load(@NonNull Pageable pageable, AdFilter filter) {
         Page<Advertisement> page = filter == null
-                ? advertisementRepository.findAll(pageable)
+                ? advertisementRepository.findAllByStatusEquals(AdStatus.ACTIVE, pageable)
                 : advertisementRepository.findAll(AdSpecification.withFilter(filter), pageable);
 
         return PageResponse.of(page, AdvertisementReadMapper.INSTANCE::toRead);
