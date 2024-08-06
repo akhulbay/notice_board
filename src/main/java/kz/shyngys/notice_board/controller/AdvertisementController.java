@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/advertisements")
@@ -21,7 +19,7 @@ public class AdvertisementController {
     @GetMapping
     public PageResponse<AdvertisementToReadDto> findAll(@RequestParam("size") int size,
                                                         @RequestParam("page") int page,
-                                                        @RequestParam(value = "filer", required = false) AdFilter filter) {
+                                                        @RequestParam(value = "filter", required = false) AdFilter filter) {
 
         return advertisementService.load(PageRequest.of(page, size), filter);
     }

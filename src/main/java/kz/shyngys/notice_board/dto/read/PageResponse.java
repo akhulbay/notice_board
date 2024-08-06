@@ -25,7 +25,6 @@ public class PageResponse<T> {
 
             return meta;
         }
-
     }
 
     public static <T> PageResponse<T> of(Page<T> page) {
