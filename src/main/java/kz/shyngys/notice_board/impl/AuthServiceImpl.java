@@ -5,7 +5,7 @@ import kz.shyngys.notice_board.dto.LoginRequest;
 import kz.shyngys.notice_board.dto.read.AuthResponse;
 import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import kz.shyngys.notice_board.mapper.UserCreateUpdateMapper;
-import kz.shyngys.notice_board.model.User;
+import kz.shyngys.notice_board.model.db.User;
 import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.service.InMemoryTokenBlackListService;
 import kz.shyngys.notice_board.service.JwtService;

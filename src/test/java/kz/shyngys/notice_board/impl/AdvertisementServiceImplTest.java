@@ -3,7 +3,7 @@ package kz.shyngys.notice_board.impl;
 import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
-import kz.shyngys.notice_board.model.Advertisement;
+import kz.shyngys.notice_board.model.db.Advertisement;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.util.RND;
 import org.mockito.ArgumentCaptor;

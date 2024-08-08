@@ -2,8 +2,8 @@ package kz.shyngys.notice_board.impl;
 
 import kz.shyngys.notice_board.dto.BetRequest;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
-import kz.shyngys.notice_board.model.Advertisement;
-import kz.shyngys.notice_board.model.Bet;
+import kz.shyngys.notice_board.model.db.Advertisement;
+import kz.shyngys.notice_board.model.db.Bet;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.BetRepository;
 import kz.shyngys.notice_board.service.AuthService;

@@ -1,4 +1,4 @@
-package kz.shyngys.notice_board.model;
+package kz.shyngys.notice_board.model.db;
 
 import org.springframework.security.core.GrantedAuthority;
 

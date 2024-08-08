@@ -1,6 +1,6 @@
 package kz.shyngys.notice_board.repository;
 
-import kz.shyngys.notice_board.model.User;
+import kz.shyngys.notice_board.model.db.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

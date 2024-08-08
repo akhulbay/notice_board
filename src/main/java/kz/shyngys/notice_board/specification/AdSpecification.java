@@ -2,7 +2,7 @@ package kz.shyngys.notice_board.specification;
 
 import jakarta.persistence.criteria.Predicate;
 import kz.shyngys.notice_board.dto.filter.AdFilter;
-import kz.shyngys.notice_board.model.Advertisement;
+import kz.shyngys.notice_board.model.db.Advertisement;
 import lombok.NonNull;
 import org.springframework.data.jpa.domain.Specification;
 

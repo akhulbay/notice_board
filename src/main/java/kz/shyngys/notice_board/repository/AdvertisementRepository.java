@@ -1,7 +1,7 @@
 package kz.shyngys.notice_board.repository;
 
-import kz.shyngys.notice_board.model.AdStatus;
-import kz.shyngys.notice_board.model.Advertisement;
+import kz.shyngys.notice_board.model.db.AdStatus;
+import kz.shyngys.notice_board.model.db.Advertisement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
