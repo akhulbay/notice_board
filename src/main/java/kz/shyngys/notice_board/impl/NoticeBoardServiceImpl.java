@@ -1,7 +1,10 @@
 package kz.shyngys.notice_board.impl;
 
 import kz.shyngys.notice_board.dto.BetRequest;
+import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
+import kz.shyngys.notice_board.model.Advertisement;
 import kz.shyngys.notice_board.model.Bet;
+import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.BetRepository;
 import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.service.NoticeBoardService;
@@ -18,14 +21,22 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class NoticeBoardServiceImpl implements NoticeBoardService {
 
-    private final BetRepository betRepository;
     private final AuthService authService;
+    private final AdvertisementRepository advertisementRepository;
+    private final BetRepository betRepository;
 
     @Transactional
     @Override
     public void makeBet(@NonNull BetRequest request) {
         Long userId = authService.getCurrentUserId()
                 .orElseThrow(() -> new RuntimeException("User not logged in"));
+
+        Advertisement advertisement = advertisementRepository.findById(request.getAdvertisementId())
+                .orElseThrow(() -> new NoAdvertisementWithId(request.getAdvertisementId()));
+
+        if (request.amount < advertisement.getMinPrice()) {
+            throw new RuntimeException("Not enough price for this advertisement");
+        }
 
         Optional<Bet> optionalBet = betRepository.findBetById(request.advertisementId);
 

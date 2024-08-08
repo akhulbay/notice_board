@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("t_bet")
+@Table(name = "t_bet")
 public class Bet {
 
     @Id
