@@ -22,7 +22,7 @@ public class EmailInServiceReal implements EmailInService {
 
     @Override
     public void send(Email email) {
-        log.trace("REAL :: started sending email");
+        log.info("REAL :: started sending email");
 
         JavaMailSenderImpl sender = createJavaMailSender();
 
@@ -30,7 +30,7 @@ public class EmailInServiceReal implements EmailInService {
 
         try {
             sender.send(mimeMessage);
-            log.trace("REAL :: finished sending email");
+            log.info("REAL :: finished sending email");
         } catch (MailException e) {
             log.error("Error while sending email: {}", e.getMessage());
         }
@@ -46,7 +46,7 @@ public class EmailInServiceReal implements EmailInService {
             helper.setText(email.getBody());
             helper.setTo(new InternetAddress(email.getTo()));
 
-            log.trace("Sending email to {}, with subject {}", email.getTo(), email.getSubject());
+            log.info("Sending email to {}, with subject {}", email.getTo(), email.getSubject());
 
             return message;
         } catch (MessagingException e) {
