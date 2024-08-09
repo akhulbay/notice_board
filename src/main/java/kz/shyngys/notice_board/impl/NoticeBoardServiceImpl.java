@@ -46,12 +46,14 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
             throw new RuntimeException("Cannot make bet, refresh and try again");
         }
 
-        betRepository.save(Bet.builder()
-                .id(request.advertisementId)
-                .amount(request.amount)
-                .expiresAt(now.plusMinutes(BetUtil.BET_EXPIRATION_MINUTES))
-                .userId(userId)
-                .build());
+        betRepository.save(
+                Bet.builder()
+                        .id(request.advertisementId)
+                        .amount(request.amount)
+                        .expiresAt(now.plusMinutes(BetUtil.BET_EXPIRATION_MINUTES))
+                        .userId(userId)
+                        .build()
+        );
     }
 
     private boolean isValid(Optional<Bet> optionalBet, Long amount, LocalDateTime now) {
