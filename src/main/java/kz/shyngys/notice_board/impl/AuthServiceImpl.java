@@ -74,7 +74,7 @@ public class AuthServiceImpl implements AuthService {
     public Optional<String> getCurrentUserEmail() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-        if (auth == null || auth.isAuthenticated() || (auth.getPrincipal() instanceof AnonymousAuthenticationToken)) {
+        if (auth == null || !auth.isAuthenticated() || (auth.getPrincipal() instanceof AnonymousAuthenticationToken)) {
             return Optional.empty();
         }
 
