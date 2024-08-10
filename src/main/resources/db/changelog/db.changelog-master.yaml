@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/2024_07_22_create_init_tables.sql
   - include:
       file: db/changelog/2024_08_08_create_bet_table.sql
+  - include:
+      file: db/changelog/2024_08_10_alter_bet_table_add_column_lockId.sql
