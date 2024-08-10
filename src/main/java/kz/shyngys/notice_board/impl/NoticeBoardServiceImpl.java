@@ -7,6 +7,7 @@ import kz.shyngys.notice_board.model.db.Bet;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.BetRepository;
 import kz.shyngys.notice_board.service.AuthService;
+import kz.shyngys.notice_board.service.EmailService;
 import kz.shyngys.notice_board.service.NoticeBoardService;
 import kz.shyngys.notice_board.util.BetUtil;
 import lombok.NonNull;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -24,6 +26,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
     private final AuthService authService;
     private final AdvertisementRepository advertisementRepository;
     private final BetRepository betRepository;
+    private final EmailService emailService;
 
     @Transactional
     @Override
@@ -46,6 +49,10 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
             throw new RuntimeException("Cannot make bet, refresh and try again");
         }
 
+        if (optionalBet.isPresent() && Objects.equals(optionalBet.get().getUserId(), userId)) {
+            notifyOutbid(optionalBet.get());
+        }
+
         betRepository.save(
                 Bet.builder()
                         .id(request.advertisementId)
@@ -64,6 +71,10 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
         Bet bet = optionalBet.get();
 
         return bet.getExpiresAt().isAfter(now) && amount > bet.getAmount();
+    }
+
+    private void notifyOutbid(Bet bet) {
+        emailService.sendBetOutbidMessage(bet);
     }
 
 }
