@@ -24,6 +24,9 @@ public class Bet {
     @Column(name = "expires_at")
     private LocalDateTime expiresAt;
 
+    @Column(name = "lock_id")
+    private String lockId;
+
     @Column(name = "user_id")
     private Long userId;
 
