@@ -15,8 +15,8 @@ public interface BetRepository extends JpaRepository<Bet, Long> {
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(value = """
-                SELECT * FROM t_bet WHERE id = :id
-            """, nativeQuery = true)
+                SELECT t FROM Bet t WHERE t.id = :id
+            """)
     Optional<Bet> findBetById(@Param("id") Long id);
 
     @Query(value = """

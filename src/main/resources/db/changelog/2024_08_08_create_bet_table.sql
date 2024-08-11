@@ -4,8 +4,8 @@
 CREATE TABLE t_bet
 (
     id         BIGINT PRIMARY KEY,
-    amount     BIGINT NOT NULL,
-    expires_at DATE   NOT NULL,
+    amount     BIGINT    NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
     user_id    BIGINT REFERENCES t_user (id)
 );
 

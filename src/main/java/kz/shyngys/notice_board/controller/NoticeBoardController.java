@@ -18,7 +18,6 @@ public class NoticeBoardController {
             summary = "Make a bet for a specific advertisement",
             description = "All fields must be non null."
     )
-    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     public void makeBet(@RequestBody BetRequest request) {
