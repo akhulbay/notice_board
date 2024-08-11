@@ -2,9 +2,8 @@ package kz.shyngys.notice_board.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletRequest;
-import kz.shyngys.notice_board.dto.read.AuthResponse;
 import kz.shyngys.notice_board.dto.LoginRequest;
-import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
+import kz.shyngys.notice_board.dto.read.AuthResponse;
 import kz.shyngys.notice_board.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,8 +34,8 @@ public class AuthController {
                           "an access token is generated for the newly created account."
     )
     @PostMapping("/register")
-    public AuthResponse register(@RequestBody UserToCreateUpdateDto userToCreate) {
-        return authService.register(userToCreate);
+    public AuthResponse register(@RequestBody LoginRequest request) {
+        return authService.register(request);
     }
 
     @Operation(

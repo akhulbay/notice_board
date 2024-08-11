@@ -6,6 +6,7 @@ import kz.shyngys.notice_board.dto.read.AuthResponse;
 import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import kz.shyngys.notice_board.mapper.UserCreateUpdateMapper;
 import kz.shyngys.notice_board.model.db.User;
+import kz.shyngys.notice_board.model.db.UserRole;
 import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.service.TokenBlackListService;
 import kz.shyngys.notice_board.service.JwtService;
@@ -51,10 +52,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthResponse register(@NonNull UserToCreateUpdateDto userToCreate) {
-        if (userService.isExistsByEmail(userToCreate.email())) {
-            throw new RuntimeException("User already exists with email: " + userToCreate.email());
+    public AuthResponse register(@NonNull LoginRequest request) {
+        validate(request);
+
+        if (userService.isExistsByEmail(request.email)) {
+            throw new RuntimeException("User already exists with email: " + request.email);
         }
+
+        UserToCreateUpdateDto userToCreate = new UserToCreateUpdateDto(
+                request.email, request.password, UserRole.USER.name());
 
         Long id = userService.create(userToCreate);
 
