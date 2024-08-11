@@ -37,10 +37,11 @@ public class SecurityConfig {
         http.sessionManagement(sessionManagement ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        http.authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated());
+        http.authorizeHttpRequests(auth ->
+                auth.requestMatchers("/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated());
 
         return http.build();
     }

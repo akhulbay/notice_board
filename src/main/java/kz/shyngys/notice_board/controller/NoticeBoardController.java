@@ -1,5 +1,6 @@
 package kz.shyngys.notice_board.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import kz.shyngys.notice_board.dto.BetRequest;
 import kz.shyngys.notice_board.service.NoticeBoardService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,11 @@ public class NoticeBoardController {
 
     private final NoticeBoardService noticeBoardService;
 
+    @Operation(
+            summary = "Make a bet for a specific advertisement",
+            description = "All fields must be non null."
+    )
+    @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @PostMapping
     public void makeBet(@RequestBody BetRequest request) {
