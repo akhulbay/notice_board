@@ -32,9 +32,14 @@ public interface BetRepository extends JpaRepository<Bet, Long> {
                     UPDATE t_bet
                     SET lock_id = :lockId
                     WHERE id = :id
-                    RETURNING lock_id;
             """, nativeQuery = true)
-    String lockFinishedBet(@Param("id") Long id, @Param("lockId") String lockId);
+    void lockFinishedBet(@Param("id") Long id, @Param("lockId") String lockId);
 
+    @Query(value = """
+                SELECT lock_id
+                FROM t_bet
+                WHERE id = :id
+            """, nativeQuery = true)
+    String findLockIdById(@Param("id") Long id);
 
 }

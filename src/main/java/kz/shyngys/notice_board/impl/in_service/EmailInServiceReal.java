@@ -37,12 +37,18 @@ public class EmailInServiceReal implements EmailInService {
     }
 
     private MimeMessage convert(JavaMailSenderImpl sender, Email email) {
-        MimeMessage message = sender.createMimeMessage();
-
         try {
+            MimeMessage message = sender.createMimeMessage();
+
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setSubject(email.getSubject());
-            helper.setFrom(email.getFrom());
+
+            if (email.getFrom() == null) {
+                helper.setFrom(config.username);
+            } else {
+                helper.setFrom(email.getFrom());
+            }
+
             helper.setText(email.getBody());
             helper.setTo(new InternetAddress(email.getTo()));
 
@@ -65,7 +71,6 @@ public class EmailInServiceReal implements EmailInService {
         Properties properties = new Properties();
         properties.put("mail.transport.protocol", "smtp");
         properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.enable", "true");
         properties.put("mail.smtp.starttls.enable", "true");
         sender.setJavaMailProperties(properties);
 

@@ -36,7 +36,8 @@ public class FinishedBetScheduler {
             Bet bet = optionalBet.get();
             String lockId = UUID.randomUUID().toString();
 
-            String resultingLockId = betRepository.lockFinishedBet(bet.getId(), lockId);
+            betRepository.lockFinishedBet(bet.getId(), lockId);
+            String resultingLockId = betRepository.findLockIdById(bet.getId());
 
             if (!lockId.equals(resultingLockId)) {
                 break;
