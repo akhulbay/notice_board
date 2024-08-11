@@ -7,7 +7,7 @@ import kz.shyngys.notice_board.dto.write.UserToCreateUpdateDto;
 import kz.shyngys.notice_board.mapper.UserCreateUpdateMapper;
 import kz.shyngys.notice_board.model.db.User;
 import kz.shyngys.notice_board.service.AuthService;
-import kz.shyngys.notice_board.service.InMemoryTokenBlackListService;
+import kz.shyngys.notice_board.service.TokenBlackListService;
 import kz.shyngys.notice_board.service.JwtService;
 import kz.shyngys.notice_board.service.UserService;
 import lombok.NonNull;
@@ -28,7 +28,7 @@ import static kz.shyngys.notice_board.util.validator.AuthValidator.validate;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private final InMemoryTokenBlackListService tokenBlackListService;
+    private final TokenBlackListService tokenBlackListService;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;

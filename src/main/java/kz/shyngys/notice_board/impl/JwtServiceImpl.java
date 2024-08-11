@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
-import kz.shyngys.notice_board.service.InMemoryTokenBlackListService;
+import kz.shyngys.notice_board.service.TokenBlackListService;
 import kz.shyngys.notice_board.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,7 +26,7 @@ public class JwtServiceImpl implements JwtService {
 
     private static final String SECRET_KEY = "72357538782F413F4428472B4B6250655368566D597033733676397924422645";
 
-    private final InMemoryTokenBlackListService tokenBlackListService;
+    private final TokenBlackListService tokenBlackListService;
 
     @Override
     public String extractEmail(String token) {

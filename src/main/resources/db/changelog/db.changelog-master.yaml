@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/2024_08_08_create_bet_table.sql
   - include:
       file: db/changelog/2024_08_10_alter_bet_table_add_column_lockId.sql
+  - include:
+      file: db/changelog/2024_08_11_create_token_black_list_table.sql
