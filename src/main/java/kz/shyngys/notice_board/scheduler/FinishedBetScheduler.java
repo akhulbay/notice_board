@@ -1,6 +1,7 @@
 package kz.shyngys.notice_board.scheduler;
 
 import kz.shyngys.notice_board.model.db.Bet;
+import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.BetRepository;
 import kz.shyngys.notice_board.service.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ public class FinishedBetScheduler {
 
     private final EmailService emailService;
     private final BetRepository betRepository;
+    private final AdvertisementRepository advertisementRepository;
 
     @Scheduled(fixedDelay = 5_000)
     @Transactional
@@ -41,7 +43,14 @@ public class FinishedBetScheduler {
             }
 
             emailService.sendBetWonMessage(bet);
+
+            removeBetAndAdvertisement(bet);
         }
+    }
+
+    private void removeBetAndAdvertisement(Bet bet) {
+        betRepository.deleteById(bet.getId());
+        advertisementRepository.markRemoved(bet.getId());
     }
 
 
