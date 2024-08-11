@@ -5,12 +5,16 @@ import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
 import kz.shyngys.notice_board.dto.read.PageResponse;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
+import kz.shyngys.notice_board.exception.NoUserWithId;
 import kz.shyngys.notice_board.mapper.AdvertisementCreateUpdateMapper;
 import kz.shyngys.notice_board.mapper.AdvertisementReadMapper;
 import kz.shyngys.notice_board.model.db.AdStatus;
 import kz.shyngys.notice_board.model.db.Advertisement;
+import kz.shyngys.notice_board.model.db.User;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
+import kz.shyngys.notice_board.repository.UserRepository;
 import kz.shyngys.notice_board.service.AdvertisementService;
+import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.specification.AdSpecification;
 import kz.shyngys.notice_board.util.validator.AdvertisementValidator;
 import lombok.NonNull;
@@ -20,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
 
 @Service
@@ -28,6 +34,8 @@ import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
 public class AdvertisementServiceImpl implements AdvertisementService {
 
     private final AdvertisementRepository advertisementRepository;
+    private final AuthService authService;
+    private final UserRepository userRepository;
 
     @Override
     public PageResponse<AdvertisementToReadDto> load(@NonNull Pageable pageable, AdFilter filter) {
@@ -52,7 +60,29 @@ public class AdvertisementServiceImpl implements AdvertisementService {
 
         Advertisement advertisement = AdvertisementCreateUpdateMapper.INSTANCE.toAdvertisement(dto);
 
+        setDefaults(advertisement);
+
         return advertisementRepository.save(advertisement).getId();
+    }
+
+    private void setDefaults(Advertisement advertisement) {
+        if (advertisement.getStatus() == null) {
+            advertisement.setStatus(AdStatus.ACTIVE);
+        }
+
+        if (advertisement.getCreatedAt() == null) {
+            advertisement.setCreatedAt(LocalDateTime.now());
+        }
+
+        if (advertisement.getUser() == null) {
+            Long currentUserId = authService.getCurrentUserId()
+                    .orElseThrow(() -> new RuntimeException("User is not logged in"));
+
+            User user = userRepository.findById(currentUserId)
+                    .orElseThrow(() -> new NoUserWithId(currentUserId));
+
+            advertisement.setUser(user);
+        }
     }
 
     @Transactional

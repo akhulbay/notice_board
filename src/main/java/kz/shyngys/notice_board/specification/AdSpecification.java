@@ -21,13 +21,17 @@ public final class AdSpecification {
             List<Predicate> predicates = new ArrayList<>();
 
             if (isNotNullAndEmpty(filter.title())) {
-                predicates.add(criteriaBuilder.like(root.get(Advertisement.Fields.title),
-                        "%" + filter.title().toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get(Advertisement.Fields.title)),
+                        "%" + filter.title().toLowerCase() + "%"
+                ));
             }
 
             if (isNotNullAndEmpty(filter.description())) {
-                predicates.add(criteriaBuilder.like(root.get(Advertisement.Fields.description),
-                        "%" + filter.description().toLowerCase() + "%"));
+                predicates.add(criteriaBuilder.like(
+                        criteriaBuilder.lower(root.get(Advertisement.Fields.description)),
+                        "%" + filter.description().toLowerCase() + "%"
+                ));
             }
 
             if (filter.createdAtFrom() != null) {

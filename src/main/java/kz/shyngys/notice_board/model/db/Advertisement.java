@@ -39,7 +39,7 @@ public class Advertisement {
     @ManyToOne
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "advertisement")
     private List<Image> images;
 
 }

@@ -1,16 +1,19 @@
 package kz.shyngys.notice_board.dto.read;
 
 
+import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.function.Function;
 
+@Getter
 public class PageResponse<T> {
 
     public MetaData metaData;
     public List<T> data;
 
+    @Getter
     public static class MetaData {
         int page;
         int size;
