@@ -49,7 +49,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
             throw new RuntimeException("Cannot make bet, refresh and try again");
         }
 
-        if (optionalBet.isPresent() && Objects.equals(optionalBet.get().getUserId(), userId)) {
+        if (optionalBet.isPresent() && !Objects.equals(optionalBet.get().getUserId(), userId)) {
             notifyOutbid(optionalBet.get());
         }
 
