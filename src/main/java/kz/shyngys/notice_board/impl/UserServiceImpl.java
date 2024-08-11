@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,7 @@ import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
                 .toList();
     }
 
+    @Transactional
     @Override
     public Long create(@NonNull UserToCreateUpdateDto userToCreate) {
         UserValidator.validate(userToCreate);
@@ -70,6 +73,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.saveAndFlush(user).getId();
     }
 
+    @Transactional
     @Override
     public UserToReadDto update(@NonNull Long id, @NonNull UserToCreateUpdateDto userToUpdate) {
         return userRepository.findById(id)
@@ -95,6 +99,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public void delete(@NonNull Long id) {
         userRepository.deleteById(id);
