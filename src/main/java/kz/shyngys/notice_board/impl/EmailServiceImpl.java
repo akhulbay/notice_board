@@ -23,28 +23,65 @@ public class EmailServiceImpl implements EmailService {
     private final AdvertisementRepository advertisementRepository;
     private final KafkaProducers kafkaProducers;
 
+    public static class MessageContext {
+
+        Advertisement advertisement;
+        User user;
+        String message;
+
+        public static MessageContext of(@NonNull Advertisement advertisement, @NonNull User user, @NonNull String message) {
+            MessageContext ctx = new MessageContext();
+
+            ctx.advertisement = advertisement;
+            ctx.user = user;
+            ctx.message = message;
+
+            return ctx;
+        }
+
+    }
 
     @Override
-    public void sendBetWonMessage(@NonNull Bet bet) {
-        send0(bet, NotificationMessage.BET_WON);
+    public void sendBetWonMessages(@NonNull Bet bet) {
+        Advertisement advertisement = advertisementRepository.findById(bet.getId())
+                .orElseThrow(() -> new NoAdvertisementWithId(bet.getId()));
+
+        User betWinner = userRepository.findById(bet.getUserId())
+                .orElseThrow(() -> new NoUserWithId(bet.getUserId()));
+
+        SEND_TO_WINNER:
+        {
+            MessageContext winnerMsg = MessageContext.of(advertisement, betWinner,
+                    NotificationMessage.BET_WON.message);
+            send(winnerMsg);
+        }
+
+        SEND_TO_OWNER:
+        {
+            MessageContext ownerMsg = MessageContext.of(advertisement, advertisement.getUser(),
+                    NotificationMessage.AD_SOLD.message);
+            send(ownerMsg);
+        }
     }
 
     @Override
     public void sendBetOutbidMessage(@NonNull Bet bet) {
-        send0(bet, NotificationMessage.BET_OUTBID);
-    }
+        Advertisement advertisement = advertisementRepository.findById(bet.getId())
+                .orElseThrow(() -> new NoAdvertisementWithId(bet.getId()));
 
-    public void send0(Bet bet, NotificationMessage message) {
-        User user = userRepository.findById(bet.getUserId())
+        User betLoser = userRepository.findById(bet.getUserId())
                 .orElseThrow(() -> new NoUserWithId(bet.getUserId()));
 
-        Advertisement advertisement = advertisementRepository.findById(bet.getId())
-                .orElseThrow(() -> new NoAdvertisementWithId(bet.getUserId()));
+        MessageContext message = MessageContext.of(advertisement, betLoser,
+                NotificationMessage.BET_OUTBID.message);
+        send(message);
+    }
 
+    public void send(MessageContext context) {
         Email emailToSend = Email.builder()
-                .body(message.message)
-                .to(user.getEmail())
-                .subject(generateTitle(advertisement))
+                .body(context.message)
+                .to(context.user.getEmail())
+                .subject(generateTitle(context.advertisement))
                 .build();
 
         kafkaProducers.sendEmail(emailToSend);

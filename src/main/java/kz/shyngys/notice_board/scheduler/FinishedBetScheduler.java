@@ -43,7 +43,7 @@ public class FinishedBetScheduler {
                 break;
             }
 
-            emailService.sendBetWonMessage(bet);
+            emailService.sendBetWonMessages(bet);
 
             removeBetAndAdvertisement(bet);
         }
