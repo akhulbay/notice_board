@@ -30,16 +30,17 @@ public class EmailInServiceReal implements EmailInService {
 
         try {
             sender.send(mimeMessage);
-            log.info("REAL :: finished sending email");
         } catch (MailException e) {
             log.error("Error while sending email: {}", e.getMessage());
         }
+
+        log.info("REAL :: finished sending email");
     }
 
     private MimeMessage convert(JavaMailSenderImpl sender, Email email) {
-        try {
-            MimeMessage message = sender.createMimeMessage();
+        MimeMessage message = sender.createMimeMessage();
 
+        try {
             MimeMessageHelper helper = new MimeMessageHelper(message);
             helper.setSubject(email.getSubject());
 
