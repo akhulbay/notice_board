@@ -42,6 +42,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
             throw new RuntimeException("Not enough price for this advertisement");
         }
 
+        // here we lock this bet by id if it exists
         Optional<Bet> optionalBet = betRepository.findBetById(request.advertisementId);
 
         LocalDateTime now = LocalDateTime.now();
@@ -64,6 +65,15 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
         );
     }
 
+    /**
+     * Validates that the given parameters are correct, allowing a bet to be placed on the advertisement (ad).
+     * <p>
+     * The validation process involves:
+     * <ol>
+     *   <li>If there is no existing bet for the given ad, it is permissible to place the first bet.</li>
+     *   <li>The bet must not be expired, and the provided amount of money must exceed the current highest amount.</li>
+     * </ol>
+     */
     private boolean isValid(Optional<Bet> optionalBet, Long amount, LocalDateTime now) {
         if (optionalBet.isEmpty()) {
             return true;

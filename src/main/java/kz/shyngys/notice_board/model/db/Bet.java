@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 @Table(name = "t_bet")
 public class Bet {
 
+    /**
+     * This ID is the same as ID of {@link Advertisement} which it belongs to.
+     */
     @Id
     private Long id;
 

@@ -1,5 +1,6 @@
 package kz.shyngys.notice_board.scheduler;
 
+import kz.shyngys.notice_board.config.BetConfig;
 import kz.shyngys.notice_board.model.db.Bet;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.BetRepository;
@@ -23,6 +24,13 @@ public class FinishedBetScheduler {
     private final BetRepository betRepository;
     private final AdvertisementRepository advertisementRepository;
 
+    /**
+     * This method sends a notification to the person whose bet was the last one and remained valid
+     * for {@link BetConfig#expirationMinutes} minutes.
+     * <p>
+     * A lock is used on the bet before it is removed and a congratulatory notification is sent.
+     * This ensures that another scheduler doesn't send the same message to the same user at the same time.
+     */
     @Scheduled(fixedDelay = 5_000)
     @Transactional
     public void sendGreetingsToWinner() {
