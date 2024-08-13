@@ -1,5 +1,6 @@
 package kz.shyngys.notice_board.impl;
 
+import kz.shyngys.notice_board.config.BetConfig;
 import kz.shyngys.notice_board.dto.BetRequest;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
 import kz.shyngys.notice_board.model.db.Advertisement;
@@ -9,7 +10,6 @@ import kz.shyngys.notice_board.repository.BetRepository;
 import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.service.EmailService;
 import kz.shyngys.notice_board.service.NoticeBoardService;
-import kz.shyngys.notice_board.util.BetUtil;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
     private final AdvertisementRepository advertisementRepository;
     private final BetRepository betRepository;
     private final EmailService emailService;
+    private final BetConfig betConfig;
 
     @Transactional
     @Override
@@ -57,7 +58,7 @@ public class NoticeBoardServiceImpl implements NoticeBoardService {
                 Bet.builder()
                         .id(request.advertisementId)
                         .amount(request.amount)
-                        .expiresAt(now.plusMinutes(BetUtil.BET_EXPIRATION_MINUTES))
+                        .expiresAt(now.plusMinutes(betConfig.expirationMinutes))
                         .userId(userId)
                         .build()
         );
