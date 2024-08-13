@@ -26,7 +26,7 @@ public class AdvertisementController {
     @GetMapping
     public PageResponse<AdvertisementToReadDto> findAll(@RequestParam("size") int size,
                                                         @RequestParam("page") int page,
-                                                        @ModelAttribute AdFilter filter) {
+                                                        @RequestBody AdFilter filter) {
         return advertisementService.load(PageRequest.of(page, size), filter);
     }
 
