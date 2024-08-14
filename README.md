@@ -1,7 +1,5 @@
 # Notice Board
 
-Notice Board is a platform designed to help users post and view announcements in a community. This project is containerized using Docker for easy setup and deployment.
-
 ## Getting Started
 
 Follow the steps below to set up and run the project locally.
