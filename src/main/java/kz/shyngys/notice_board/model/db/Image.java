@@ -11,6 +11,7 @@ import org.hibernate.type.descriptor.jdbc.VarbinaryJdbcType;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "t_image")
 public class Image {
 
     @Id
@@ -18,6 +19,9 @@ public class Image {
     private Long id;
 
     private String name;
+
+    @Column(name = "order_index")
+    private Integer orderIndex;
 
     @Lob
     @JdbcType(VarbinaryJdbcType.class)
