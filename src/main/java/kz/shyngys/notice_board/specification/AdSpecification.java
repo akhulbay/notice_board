@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.Specification;
 import java.util.ArrayList;
 import java.util.List;
 
-import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
+import static kz.shyngys.notice_board.util.StrUtils.isNotNullAndEmpty;
 
 public final class AdSpecification {
 

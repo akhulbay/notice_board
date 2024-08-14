@@ -9,6 +9,7 @@ import kz.shyngys.notice_board.service.AdvertisementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +28,7 @@ public class AdvertisementController {
     public PageResponse<AdvertisementToReadDto> findAll(@RequestParam("size") int size,
                                                         @RequestParam("page") int page,
                                                         @RequestBody AdFilter filter) {
+
         return advertisementService.load(PageRequest.of(page, size), filter);
     }
 
@@ -45,8 +47,10 @@ public class AdvertisementController {
                           "The request body should contain all necessary information for the advertisement."
     )
     @PostMapping
-    public Long create(@RequestBody AdvertisementToCreateUpdateDto dto) {
-        return advertisementService.create(dto);
+    public Long create(@RequestPart AdvertisementToCreateUpdateDto dto,
+                       @RequestParam("images") MultipartFile[] images) {
+
+        return advertisementService.create(dto, images);
     }
 
     @Operation(
@@ -57,6 +61,7 @@ public class AdvertisementController {
     @PutMapping("/{id}")
     public AdvertisementToReadDto update(@PathVariable("id") Long id,
                                          @RequestBody AdvertisementToCreateUpdateDto dto) {
+
         return advertisementService.update(id, dto);
     }
 

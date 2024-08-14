@@ -4,7 +4,10 @@ import kz.shyngys.notice_board.dto.read.AdvertisementToReadDto;
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 import kz.shyngys.notice_board.exception.NoAdvertisementWithId;
 import kz.shyngys.notice_board.model.db.Advertisement;
+import kz.shyngys.notice_board.model.db.User;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
+import kz.shyngys.notice_board.repository.UserRepository;
+import kz.shyngys.notice_board.service.AuthService;
 import kz.shyngys.notice_board.util.RND;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -26,12 +29,23 @@ public class AdvertisementServiceImplTest {
     @Mock
     private AdvertisementRepository advertisementRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
+    @Mock
+    private AuthService authService;
+
     @InjectMocks
     private AdvertisementServiceImpl advertisementService;
 
+    @SuppressWarnings("EmptyTryBlock")
     @BeforeMethod
     public void setUp() {
-        MockitoAnnotations.openMocks(this);
+        try (var ignore = MockitoAnnotations.openMocks(this)) {
+            // ignore
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -82,7 +96,7 @@ public class AdvertisementServiceImplTest {
         Long id = RND.randomLong();
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                "hXFec1e7EZ", "0bTzd5706f", RND.randomLong(), LocalDateTime.now(), null
+                "hXFec1e7EZ", "0bTzd5706f", RND.randomLong(), LocalDateTime.now()
         );
 
         Advertisement resultToReturn = Advertisement.builder()
@@ -90,10 +104,12 @@ public class AdvertisementServiceImplTest {
                 .build();
 
         doReturn(resultToReturn).when(advertisementRepository).save(any(Advertisement.class));
+        doReturn(Optional.of(RND.randomLong())).when(authService).getCurrentUserId();
+        doReturn(Optional.of(new User())).when(userRepository).findById(anyLong());
 
         //
         //
-        Long resultId = advertisementService.create(dto);
+        Long resultId = advertisementService.create(dto, null);
         //
         //
 
@@ -103,6 +119,8 @@ public class AdvertisementServiceImplTest {
         ArgumentCaptor<Advertisement> capturedAd = ArgumentCaptor.forClass(Advertisement.class);
 
         verify(advertisementRepository, times(1)).save(capturedAd.capture());
+        verify(userRepository, times(1)).findById(anyLong());
+        verify(authService, times(1)).getCurrentUserId();
 
         Advertisement valueToSave = capturedAd.getValue();
 
@@ -118,12 +136,12 @@ public class AdvertisementServiceImplTest {
     public void create__shouldThrowException_whenTitleIsNull() {
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                null, "0bTzd5706f", RND.randomLong(), LocalDateTime.now(), null
+                null, "0bTzd5706f", RND.randomLong(), LocalDateTime.now()
         );
 
         //
         //
-        advertisementService.create(dto);
+        advertisementService.create(dto, null);
         //
         //
     }
@@ -133,12 +151,12 @@ public class AdvertisementServiceImplTest {
     public void create__shouldThrowException_whenTitleIsEmpty() {
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                "", "0bTzd5706f", RND.randomLong(), LocalDateTime.now(), null
+                "", "0bTzd5706f", RND.randomLong(), LocalDateTime.now()
         );
 
         //
         //
-        advertisementService.create(dto);
+        advertisementService.create(dto, null);
         //
         //
     }
@@ -148,12 +166,12 @@ public class AdvertisementServiceImplTest {
     public void create__shouldThrowException_whenDescriptionIsNull() {
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                "wLT0u9FUEx", null, RND.randomLong(), LocalDateTime.now(), null
+                "wLT0u9FUEx", null, RND.randomLong(), LocalDateTime.now()
         );
 
         //
         //
-        advertisementService.create(dto);
+        advertisementService.create(dto, null);
         //
         //
     }
@@ -163,12 +181,12 @@ public class AdvertisementServiceImplTest {
     public void create__shouldThrowException_whenDescriptionIsEmpty() {
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                "mWkhIf3oSk", "", RND.randomLong(), LocalDateTime.now(), null
+                "mWkhIf3oSk", "", RND.randomLong(), LocalDateTime.now()
         );
 
         //
         //
-        advertisementService.create(dto);
+        advertisementService.create(dto, null);
         //
         //
     }
@@ -178,12 +196,12 @@ public class AdvertisementServiceImplTest {
     public void create__shouldThrowException_whenMinPriceIsNull() {
 
         AdvertisementToCreateUpdateDto dto = new AdvertisementToCreateUpdateDto(
-                "wLT0u9FUEx", "suNxmTyKEJ", null, LocalDateTime.now(), null
+                "wLT0u9FUEx", "suNxmTyKEJ", null, LocalDateTime.now()
         );
 
         //
         //
-        advertisementService.create(dto);
+        advertisementService.create(dto, null);
         //
         //
     }

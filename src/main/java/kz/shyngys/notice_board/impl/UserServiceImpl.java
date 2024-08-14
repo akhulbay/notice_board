@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.lang.String.format;
-import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
+import static kz.shyngys.notice_board.util.StrUtils.isNotNullAndEmpty;
 
 @Service
 @RequiredArgsConstructor

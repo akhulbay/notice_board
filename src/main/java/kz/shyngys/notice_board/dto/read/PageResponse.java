@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
-import java.util.function.Function;
 
 @Getter
 public class PageResponse<T> {
@@ -39,14 +38,11 @@ public class PageResponse<T> {
         return response;
     }
 
-    public static <R, T> PageResponse<T> of(Page<R> page, Function<R, T> dataMapper) {
+    public static <T> PageResponse<T> of(List<T> data, int page, int size, boolean hasNext) {
         PageResponse<T> response = new PageResponse<>();
 
-        response.metaData = MetaData.of(page.getNumber(), page.getSize(), page.hasNext());
-
-        response.data = page.getContent().stream()
-                .map(dataMapper)
-                .toList();
+        response.data = data;
+        response.metaData = MetaData.of(page, size, hasNext);
 
         return response;
     }

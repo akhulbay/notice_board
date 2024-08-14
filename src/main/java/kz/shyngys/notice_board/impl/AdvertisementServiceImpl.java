@@ -10,23 +10,32 @@ import kz.shyngys.notice_board.mapper.AdvertisementCreateUpdateMapper;
 import kz.shyngys.notice_board.mapper.AdvertisementReadMapper;
 import kz.shyngys.notice_board.model.db.AdStatus;
 import kz.shyngys.notice_board.model.db.Advertisement;
+import kz.shyngys.notice_board.model.db.Image;
 import kz.shyngys.notice_board.model.db.User;
 import kz.shyngys.notice_board.repository.AdvertisementRepository;
 import kz.shyngys.notice_board.repository.UserRepository;
 import kz.shyngys.notice_board.service.AdvertisementService;
 import kz.shyngys.notice_board.service.AuthService;
+import kz.shyngys.notice_board.service.ImageService;
 import kz.shyngys.notice_board.specification.AdSpecification;
+import kz.shyngys.notice_board.util.ImageUtils;
 import kz.shyngys.notice_board.util.validator.AdvertisementValidator;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
+import java.util.zip.DataFormatException;
 
-import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
+import static kz.shyngys.notice_board.util.StrUtils.isNotNullAndEmpty;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +45,7 @@ public class AdvertisementServiceImpl implements AdvertisementService {
     private final AdvertisementRepository advertisementRepository;
     private final AuthService authService;
     private final UserRepository userRepository;
+    private final ImageService imageService;
 
     @Override
     public PageResponse<AdvertisementToReadDto> load(@NonNull Pageable pageable, AdFilter filter) {
@@ -43,26 +53,74 @@ public class AdvertisementServiceImpl implements AdvertisementService {
                 ? advertisementRepository.findAllByStatusEquals(AdStatus.ACTIVE, pageable)
                 : advertisementRepository.findAll(AdSpecification.withFilter(filter), pageable);
 
-        return PageResponse.of(page, AdvertisementReadMapper.INSTANCE::toRead);
+        List<AdvertisementToReadDto> advertisements = page.getContent().stream()
+                .map(this::mapToRead)
+                .toList();
+
+        return PageResponse.of(advertisements, page.getNumber(), page.getSize(), page.hasNext());
     }
 
     @Override
     public AdvertisementToReadDto loadById(@NonNull Long id) {
         return advertisementRepository.findById(id)
-                .map(AdvertisementReadMapper.INSTANCE::toRead)
+                .map(this::mapToRead)
                 .orElseThrow(() -> new NoAdvertisementWithId(id));
+    }
+
+    private AdvertisementToReadDto mapToRead(Advertisement advertisement) {
+        AdvertisementToReadDto adToRead = AdvertisementReadMapper.INSTANCE.toRead(advertisement);
+
+        decompressImages(advertisement.getImages(), adToRead);
+
+        return adToRead;
+    }
+
+    private void decompressImages(List<Image> images, AdvertisementToReadDto userProfileToRead) {
+        if (images == null || images.isEmpty()) {
+            return;
+        }
+
+        images.stream()
+                .sorted(Comparator.comparing(Image::getOrderIndex))
+                .map(Image::getContent)
+                .map(content -> {
+                    try {
+                        return ImageUtils.decompressImage(content);
+                    } catch (DataFormatException | IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .forEach(bytes -> userProfileToRead.images().add(bytes));
     }
 
     @Transactional
     @Override
-    public Long create(@NonNull AdvertisementToCreateUpdateDto dto) {
+    public Long create(@NonNull AdvertisementToCreateUpdateDto dto, MultipartFile[] images) {
         AdvertisementValidator.validate(dto);
 
         Advertisement advertisement = AdvertisementCreateUpdateMapper.INSTANCE.toAdvertisement(dto);
 
         setDefaults(advertisement);
 
-        return advertisementRepository.save(advertisement).getId();
+        Advertisement savedAd = advertisementRepository.save(advertisement);
+
+        uploadImages(images, savedAd.getUser(), savedAd.getId());
+
+        return savedAd.getId();
+    }
+
+    @SneakyThrows
+    private void uploadImages(MultipartFile[] images, User user, Long adId) {
+        if (images == null || images.length == 0) {
+            return;
+        }
+
+        int orderIndex = 1;
+
+        for (MultipartFile image : images) {
+            String imageName = image.getName() + "_" + user.getEmail();
+            imageService.upload(image, imageName, adId, orderIndex++);
+        }
     }
 
     private void setDefaults(Advertisement advertisement) {

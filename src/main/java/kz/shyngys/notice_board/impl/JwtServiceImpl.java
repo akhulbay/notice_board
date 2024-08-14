@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static kz.shyngys.notice_board.util.StrUtil.isNotNullAndEmpty;
+import static kz.shyngys.notice_board.util.StrUtils.isNotNullAndEmpty;
 
 @Service
 @RequiredArgsConstructor

@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/2024_08_11_create_token_black_list_table.sql
   - include:
       file: db/changelog/2024_08_14_alter_image_table_add_column_order_index.sql
+  - include:
+      file: db/changelog/2024_08_14_alter_image_table_add_column_type.sql

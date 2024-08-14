@@ -2,7 +2,7 @@ package kz.shyngys.notice_board.util.validator;
 
 import kz.shyngys.notice_board.dto.write.AdvertisementToCreateUpdateDto;
 
-import static kz.shyngys.notice_board.util.StrUtil.isNullOrEmpty;
+import static kz.shyngys.notice_board.util.StrUtils.isNullOrEmpty;
 
 public final class AdvertisementValidator {
 
