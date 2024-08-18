@@ -31,6 +31,7 @@ public class FinishedBetScheduler {
      * A lock is used on the bet before it is removed and a congratulatory notification is sent.
      * This ensures that another scheduler doesn't send the same message to the same user at the same time.
      */
+    // todo shyngys add timeout also, so when api dropped with locked bet it will have timeout for lock.
     @Scheduled(fixedDelay = 5_000)
     @Transactional
     public void sendGreetingsToWinner() {
